@@ -23,7 +23,7 @@ connectDB();
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173",process.env.FRONTEND_URL as string], credentials: true }));
 
 app.use(session({secret: process.env.SESSION_SECRET as string, resave: false, saveUninitialized: false}));
 

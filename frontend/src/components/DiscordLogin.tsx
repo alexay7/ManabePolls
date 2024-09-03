@@ -14,7 +14,7 @@ export default function DiscordLogin():React.ReactElement{
 
     useEffect(()=>{
         async function getToken(code:string){
-            const result = await fetch('http://localhost:3001/discord/token', {
+            const result = await fetch(`${import.meta.env.VITE_APP_API_URL}/discord/token`, {
                 method: 'POST',
                 body: JSON.stringify({ code }),
                 headers: {
@@ -45,7 +45,7 @@ export default function DiscordLogin():React.ReactElement{
 
     useEffect(()=>{
         async function getUserInfo(){
-            const result = await fetch('http://localhost:3001/discord/p/getMe', {
+            const result = await fetch(`${import.meta.env.VITE_APP_API_URL}/discord/p/getMe`, {
                 headers: {
                     "Authorization": `${tokenType} ${accessToken}`
                 }
