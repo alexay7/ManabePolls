@@ -137,16 +137,13 @@ export default function OptionCreator({ type, open, setOpen }: OptionCreatorProp
                 </DialogHeader>
                 <form id="optioncreate" ref={formRef} onSubmit={createOption} className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2 flex-1">
-                        <div className="flex justify-between items-center">
                             <Label htmlFor="name">Nombre*</Label>
-                            <Button size="sm" variant="ghost">Cotejar</Button>
-                        </div>
                         <Input required value={name} id="name" type="text" onChange={(e)=>setName(e.target.value)}/>
                     </div>
                     <div className="flex gap-4">
                         <div className="flex flex-col gap-2 flex-1">
                             <Label htmlFor="image">Imagen*</Label>
-                            <Input required value={image} id="image" type="text" onChange={(e) => setImage(e.target.value)} />
+                            <Input className="japanese-text" required value={image} id="image" type="text" onChange={(e) => setImage(e.target.value)} />
                         </div>
                         <div className="w-[150px]">
                             <img src={image} alt="" />

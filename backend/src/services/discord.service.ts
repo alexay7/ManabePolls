@@ -40,7 +40,7 @@ export const discordService = {
             return -1;
         }
 
-        const message = `# Club de ${categories[category].name} - ${pollData.month} ${pollData.year}\nEl ganador de este mes es:\n## [${option.name}](${option.imageUrl})\n\n- Dificultad: ${option.difficulty}\n- Sinopsis: \n> ${option.description}\n\nQue tengan una gratificante experiencia y gracias por participar :ayaya: \n\n<@&${categories[category].role}>`;
+        const message = `# Club de ${categories[category].name} - ${pollData.month} ${pollData.year}\nEl ganador de este mes es:\n## [${option.name}](${option.imageUrl})\n\n- Dificultad: ${option.difficulty}\n- Sinopsis: \n> ${option.description}\n\nQue tengan una gratificante experiencia y gracias por participar <:ayaya:1157825603597238372> \n\n<@&${categories[category].role}>`;
 
         const response = await axios.post(process.env.DISCORD_WEBHOOK_URL!,{
             content:message

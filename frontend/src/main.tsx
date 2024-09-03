@@ -10,6 +10,9 @@ import Create from '@/pages/Create/Create.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster.tsx';
 
+import '@fontsource/m-plus-rounded-1c';
+import '@fontsource/fira-sans-condensed';
+
 const router = createBrowserRouter([
     {
         path: "/",

@@ -87,7 +87,7 @@ export default function DiscordLogin():React.ReactElement{
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-evenly gap-4 lg:gap-0">
                             <p>Necesitamos confirmar tu identidad para poder votar en las encuestas del mes. Tranquilo, no vamos a hacer nada con tus datos de Discord. Trust me Bro.</p>
-                            <p className="text-2xl">「にぱー」</p>
+                            <p className="text-2xl japanese-text">「にぱー」</p>
                             <a className="bg-[#747df8] text-white w-2/3 py-2 text-center rounded-sm flex items-center justify-center gap-2 text-xl" href={import.meta.env.VITE_APP_DISCORD_URL} onClick={()=>{
                                 localStorage.setItem("origin",window.location.pathname);
                             }}><DiscordIcon className="w-8"/> Discord</a>

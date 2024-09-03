@@ -51,7 +51,7 @@ export default function App() {
     }
 
     return (
-        <div className='flex flex-col gap-4 w-full md:w-3/4'>
+        <div className='flex flex-col gap-4 w-full md:w-3/4 items-center'>
             <DiscordLogin/>
             {poll?<Poll/>:<Polls/>}
         </div>

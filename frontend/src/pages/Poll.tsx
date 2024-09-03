@@ -123,7 +123,7 @@ export default function Poll():React.ReactElement{
                                 }}/>
                                 <div className="text-primary-foreground flex flex-col-reverse sm:flex-row px-2 gap-4 items-center">
                                     <div className="flex flex-col flex-1 gap-4 justify-between">
-                                        <h2 className="text-lg sm:text-3xl font-semibold">{option.name}</h2>
+                                        <h2 className="text-lg sm:text-3xl font-semibold japanese-text">{option.name}</h2>
                                         <div className="">
                                             <p className="line-clamp-5">{option.description}
                                             </p>
@@ -161,7 +161,7 @@ export default function Poll():React.ReactElement{
                                     return(
                                         <div className="rounded-lg overflow-hidden w-[100px] group flex flex-col gap-2">
                                             <img className="group-hover:scale-150 transition-transform" src={option?.imageUrl} alt="" />
-                                            <p className="text-xs">{option?.name}</p>
+                                            <p className="text-xs japanese-text">{option?.name}</p>
                                         </div>
                                     );
                                 }))}

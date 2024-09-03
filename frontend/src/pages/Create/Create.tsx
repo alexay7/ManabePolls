@@ -118,7 +118,7 @@ export default function Create():React.ReactElement{
                                     <img src={option.imageUrl} alt="" />
                                 </div>
                                 <div className="flex flex-col flex-1 gap-4 justify-between">
-                                    <h2 className="text-3xl text-end">{option.name}</h2>
+                                    <h2 className="text-3xl text-end japanese-text">{option.name}</h2>
                                     <div className="">
                                         <p className="line-clamp-6">{option.description}</p>
                                     </div>
