@@ -88,8 +88,6 @@ export default function Create():React.ReactElement{
 
         const response = await api.patch<void,PollType>(`polls/${selectedPoll}/activate`);
 
-        console.log(response);
-
         setPollData(response);
     }
 

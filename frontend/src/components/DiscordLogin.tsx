@@ -8,7 +8,7 @@ import DiscordIcon from "@/assets/discord.svg?react";
 
 export default function DiscordLogin():React.ReactElement{
     const [searchParams,setSearchParams]=useSearchParams();
-    const {accessToken,tokenType,setAccessToken,setTokenType,userInfo,setUserInfo}=useAuthStore();
+    const {accessToken,tokenType,setAccessToken,setTokenType,userInfo,setUserInfo,setLoading,loading}=useAuthStore();
 
     const modalRef = React.useRef<HTMLDivElement>(null);
 
@@ -27,6 +27,7 @@ export default function DiscordLogin():React.ReactElement{
                 setAccessToken(undefined);
                 setTokenType(undefined);
                 sessionStorage.removeItem("bearerToken");
+                setLoading(false);
                 return;
             }
     
@@ -39,6 +40,7 @@ export default function DiscordLogin():React.ReactElement{
         const code = searchParams.get('code');
     
         if(code && !accessToken){
+            setLoading(true);
             getToken(code);
         }
     },[searchParams,setAccessToken,setTokenType,setSearchParams,accessToken]);
@@ -52,6 +54,7 @@ export default function DiscordLogin():React.ReactElement{
             });
     
             if(result.status !== 200){
+                setLoading(false);
                 return;
             }
     
@@ -60,6 +63,7 @@ export default function DiscordLogin():React.ReactElement{
             setUserInfo({...userInfo,admin:userInfo.id===import.meta.env.VITE_APP_ADMIN_ID});
             // Save token in session storage
             sessionStorage.setItem("bearerToken",manabeToken);
+            setLoading(false);
         }
     
         const manabeToken = sessionStorage.getItem("bearerToken");
@@ -77,7 +81,7 @@ export default function DiscordLogin():React.ReactElement{
     },[modalRef]);
 
     return(
-        <Dialog open={!userInfo}>
+        <Dialog open={!userInfo&&!loading}>
             <DialogContent ref={modalRef}>
                 <DialogTitle>Inicia sesión con Discord</DialogTitle>
                 <DialogDescription>

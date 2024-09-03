@@ -9,6 +9,7 @@ import { PollType } from '@/types/polls';
 import { api } from '@/api/requests';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/stores/authStore';
+import Loader from '@/components/Loader';
 
 export default function App() {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function App() {
     },[navigate]);
 
     if(isLoading){
-        return <div>Loading...</div>;
+        return <Loader/>;
     }
 
     return (

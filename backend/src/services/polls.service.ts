@@ -35,5 +35,8 @@ export const pollService = {
     },
     findPollById(pollId:Types.ObjectId) {
         return Poll.findById(pollId);
+    },
+    getLastPoll(){
+        return Poll.find({active:false}).sort({_id:-1}).limit(1);
     }
 };

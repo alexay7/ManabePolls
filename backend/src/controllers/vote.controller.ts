@@ -2,7 +2,7 @@ import { TypedRequest, TypedRequestParams } from "zod-express-middleware";
 import { createVoteDto } from "../dto/vote.dto";
 import { ZodAny } from "zod";
 import { pollEndpointParams, pollTypeEndpointParams } from "../dto/poll.dto";
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
 import { VoteType } from "../types/vote";
 import { voteService } from "../services/vote.service";
@@ -85,6 +85,54 @@ export async function getUserVotes(req:TypedRequestParams<typeof pollEndpointPar
     }
 }
 
+export async function getPollVotes(req:Request,res:Response,next:NextFunction) {
+    try {
+        const categories = ["anime","manga","novel","vn","live"];
+
+        const [foundPoll] = await pollService.getLastPoll();
+
+        if (!foundPoll) {
+            return next({ status: 404, message: "Poll not found" });
+        }
+
+        if (foundPoll.active) {
+            return next({ status: 400, message: "Poll is yet active" });
+        }
+
+        // Return in format {category:{option:count}}
+        const results = await Promise.all(categories.map(async (category) => {
+            const foundVotes = (await voteService.computeVotesByCategory(new Types.ObjectId(foundPoll._id),category)).sort((a,b)=>{
+                // Order first by votes, then by option name
+                if (a.votes > b.votes) {
+                    return -1;
+                }
+
+                if (a.votes < b.votes) {
+                    return 1;
+                }
+
+                if (a.option < b.option) {
+                    return 1;
+                }
+
+                if (a.option > b.option) {
+                    return -1;
+                }
+
+                return 0;
+            });
+            return {[category]:foundVotes};
+        }));
+
+        // Transform array of objects to object
+        const votes = results.reduce((acc,curr) => ({...acc,...curr}),{});
+
+        return res.status(200).json({pollData:foundPoll,votes});
+    }catch(error) {
+        next(error);
+    }
+}
+
 export async function computePollVotes(req:TypedRequestParams<typeof pollEndpointParams>,res:Response,next:NextFunction) {
     try {
         const {pollId}=req.params;
@@ -128,6 +176,9 @@ export async function computePollVotes(req:TypedRequestParams<typeof pollEndpoin
                 }
             }
         }
+
+        // Disable poll
+        await pollService.activatePoll(new Types.ObjectId(pollId));
 
         return res.status(200).json({message:"Votes computed"});
 

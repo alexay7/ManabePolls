@@ -30,6 +30,9 @@ export default tseslint.config(
 
       // semi-colons
       semi: ['error', "always"],
+
+      // unused variables warn (ignore _)
+      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     },
   },
 )

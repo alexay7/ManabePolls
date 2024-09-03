@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster.tsx';
 
 import '@fontsource/m-plus-rounded-1c';
-import '@fontsource/fira-sans-condensed';
+import '@fontsource/fira-sans-condensed/latin.css';
 
 const router = createBrowserRouter([
     {
@@ -50,3 +50,5 @@ createRoot(document.getElementById('root')!).render(
         </QueryClientProvider>
     </StrictMode>,
 );
+
+document.getElementById('loader')!.remove();

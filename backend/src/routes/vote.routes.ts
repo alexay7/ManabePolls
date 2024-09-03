@@ -2,10 +2,12 @@ import { Router } from "express";
 import { customValidateRequest } from "../helpers/zod";
 import { createVoteDto } from "../dto/vote.dto";
 import { pollEndpointParams, pollTypeEndpointParams } from "../dto/poll.dto";
-import { computePollVotes, createVote, getUserVotes } from "../controllers/vote.controller";
+import { computePollVotes, createVote, getPollVotes, getUserVotes } from "../controllers/vote.controller";
 import { adminRoute, protectedRoute } from "../middlewares/protected";
 
 const voteRouter = Router();
+
+voteRouter.get("/lastresults", getPollVotes);
 
 voteRouter.get("/:pollId",
     adminRoute,

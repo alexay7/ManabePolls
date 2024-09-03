@@ -9,6 +9,9 @@ type AuthStore = {
     tokenType: string | null;
     setTokenType: (token: string|undefined) => void;
 
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
+
     userInfo: DiscordUserData & {admin:boolean} | null;
     setUserInfo: (data: DiscordUserData & {admin:boolean}) => void;
 
@@ -25,6 +28,9 @@ export const useAuthStore = create(
 
         tokenType: null,
         setTokenType: (token: string|undefined) => set({ tokenType: token }),
+
+        loading: false,
+        setLoading: (loading: boolean) => set({ loading }),
 
         userInfo: null,
         setUserInfo: (data: DiscordUserData & {admin:boolean}) => set({ userInfo: data }),
