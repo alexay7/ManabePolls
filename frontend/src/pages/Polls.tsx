@@ -66,7 +66,7 @@ export default function Polls():React.ReactElement{
                     <ul className="flex flex-wrap gap-4 mt-8">
                         {Children.toArray(medios.map((medio)=>(
                             <li className="w-full sm:w-[calc(50%-.5rem)] text-card">
-                                <TooltipProvider>
+                                <TooltipProvider delayDuration={100}>
                                     <Tooltip>
                                         <TooltipTrigger disabled={userVotes[medio.key]} className="w-full py-8 text-2xl disabled:opacity-20 bg-card-foreground rounded-lg" onClick={()=>{
                                             navigate(`${medio.link}`);

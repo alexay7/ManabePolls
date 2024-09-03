@@ -168,7 +168,9 @@ export default function Poll():React.ReactElement{
                             </div>
                             <DrawerFooter>
                                 <Button onClick={emitVote}>Confirmar</Button>
-                                <DrawerClose>Cancelar</DrawerClose>
+                                <DrawerClose onClick={()=>{
+                                    setDrawerOpen(false);
+                                }}>Cancelar</DrawerClose>
                             </DrawerFooter>
                         </DrawerContent>
                     </Drawer>
