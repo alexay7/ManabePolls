@@ -33,10 +33,16 @@ export const pollService = {
             active:true
         },{new:true});
     },
+    endPoll(pollId:Types.ObjectId) {
+        return Poll.findByIdAndUpdate(pollId,{
+            active:false,
+            ended:true
+        },{new:true});
+    },
     findPollById(pollId:Types.ObjectId) {
         return Poll.findById(pollId);
     },
     getLastPoll(){
-        return Poll.find({active:false}).sort({_id:-1}).limit(1);
+        return Poll.find({ended:true}).sort({_id:-1}).limit(1);
     }
 };

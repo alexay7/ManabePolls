@@ -68,6 +68,10 @@ const pollSchema = new Schema<PollType>({
     active:{
         type:Boolean,
         default:false
+    },
+    ended:{
+        type:Boolean,
+        default:false
     }
 });
 

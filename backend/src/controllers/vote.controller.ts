@@ -178,7 +178,7 @@ export async function computePollVotes(req:TypedRequestParams<typeof pollEndpoin
         }
 
         // Disable poll
-        await pollService.activatePoll(new Types.ObjectId(pollId));
+        await pollService.endPoll(new Types.ObjectId(pollId));
 
         return res.status(200).json({message:"Votes computed"});
 

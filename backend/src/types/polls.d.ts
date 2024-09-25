@@ -23,4 +23,5 @@ export type PollType = {
     vn: Option[];
     live: Option[];
     active: boolean;
+    ended: boolean;
 };

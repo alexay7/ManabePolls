@@ -50,7 +50,8 @@ export default function Create():React.ReactElement{
             if(!userInfo||!userInfo.admin) return [];
 
             return api.get<PollType[]>("polls");
-        }
+        },
+        refetchOnWindowFocus:false
     });
 
     useEffect(()=>{
