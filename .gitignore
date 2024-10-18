@@ -25,3 +25,5 @@ dist-ssr
 
 *.webp
 .env
+
+docker-compose.yml

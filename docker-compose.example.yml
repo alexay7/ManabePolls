@@ -1,0 +1,36 @@
+# Docker compose file for running the application
+
+services:
+  # NestJS backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - PORT=3000
+      - MONGO_URI=
+      - DISCORD_CLIENT_ID=
+      - DISCORD_CLIENT_SECRET=
+      - SESSION_SECRET=
+      - FRONTEND_URL=
+      - ADMIN_ID=
+      - DISCORD_WEBHOOK_URL=
+  frontend:
+    build:
+      context: ./mocksfrontend
+      dockerfile: Dockerfile
+    ports:
+      - "3005:3000"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - VITE_APP_DISCORD_AVATARS_URL=
+      - VITE_APP_DISCORD_URL=
+      - VITE_APP_ADMIN_ID=
+      - VITE_APP_API_URL=
+    depends_on:
+      - backend
