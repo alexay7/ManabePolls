@@ -13,7 +13,7 @@ import Loader from '@/components/Loader';
 
 export default function App() {
     const navigate = useNavigate();
-    const {userInfo}=useAuthStore();
+    const {userInfo,logout}=useAuthStore();
     const {poll}=useParams();
 
     const {setPollData}=usePollStore();
@@ -31,6 +31,14 @@ export default function App() {
         },
         enabled:!!userInfo
     });
+
+    useEffect(()=>{
+        const sessionToken = sessionStorage.getItem("bearerToken");
+
+        if(!sessionToken && userInfo){
+            logout();
+        }
+    },[logout,userInfo]);
 
     useEffect(()=>{
         if(data){

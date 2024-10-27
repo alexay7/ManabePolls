@@ -13,19 +13,14 @@ export default function Polls():React.ReactElement{
     const navigate = useNavigate();
 
     const {pollData}=usePollStore();
-    const {userInfo,logout}=useAuthStore();
+    const {userInfo}=useAuthStore();
 
     const {data:userVotes,isLoading,isSuccess}=useQuery({
         queryKey:["uservotes",pollData],
         queryFn: async()=>{
             if(!pollData) return null;
 
-            try{
-                return api.get<Record<Categories,boolean>>(`votes/${pollData._id}/myvotes`);
-            }catch{
-                logout();
-                return null;
-            }
+            return api.get<Record<Categories,boolean>>(`votes/${pollData._id}/myvotes`);
         },
         enabled:!!userInfo
     });

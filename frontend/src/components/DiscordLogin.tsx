@@ -70,9 +70,6 @@ export default function DiscordLogin():React.ReactElement{
 
         if(accessToken && !manabeToken){
             getUserInfo();
-        }else if(!accessToken && !manabeToken){
-            setLoading(false);
-            setUserInfo(null);
         }
     },[accessToken,setUserInfo]);
 
