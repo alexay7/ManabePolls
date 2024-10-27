@@ -21,7 +21,7 @@ services:
       - DISCORD_WEBHOOK_URL=
   frontend:
     build:
-      context: ./mocksfrontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3005:3000"

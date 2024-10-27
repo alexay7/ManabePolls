@@ -13,7 +13,7 @@ type AuthStore = {
     setLoading: (loading: boolean) => void;
 
     userInfo: DiscordUserData & {admin:boolean} | null;
-    setUserInfo: (data: DiscordUserData & {admin:boolean}) => void;
+    setUserInfo: (data: (DiscordUserData & {admin:boolean})|null) => void;
 
     bearerToken: string | null;
     setBearerToken: (token: string) => void;
@@ -33,7 +33,7 @@ export const useAuthStore = create(
         setLoading: (loading: boolean) => set({ loading }),
 
         userInfo: null,
-        setUserInfo: (data: DiscordUserData & {admin:boolean}) => set({ userInfo: data }),
+        setUserInfo: (data: (DiscordUserData & {admin:boolean})|null) => set({ userInfo: data }),
 
         bearerToken: null,
         setBearerToken: (token: string) => set({ bearerToken: token }),

@@ -68,10 +68,13 @@ export default function DiscordLogin():React.ReactElement{
     
         const manabeToken = sessionStorage.getItem("bearerToken");
 
-        if(accessToken && tokenType && !manabeToken){
+        if(accessToken && !manabeToken){
             getUserInfo();
+        }else if(!accessToken && !manabeToken){
+            setLoading(false);
+            setUserInfo(null);
         }
-    },[accessToken,tokenType,setUserInfo]);
+    },[accessToken,setUserInfo]);
 
     useEffect(()=>{
         const modal = modalRef.current;
