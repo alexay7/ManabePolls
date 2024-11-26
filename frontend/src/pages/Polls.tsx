@@ -62,7 +62,7 @@ export default function Polls():React.ReactElement{
             link:"/vn"
         },
         {
-            name: "Live action del mes",
+            name: "Obra audiovisual del mes",
             key:"live",
             link:"/live"
         }

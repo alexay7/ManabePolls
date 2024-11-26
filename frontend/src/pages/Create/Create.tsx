@@ -35,7 +35,7 @@ export default function Create():React.ReactElement{
             value:"vn"
         },
         {
-            name:"Live action",
+            name:"Obra audiovisual",
             value:"live"
         }
     ];
