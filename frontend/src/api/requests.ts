@@ -24,7 +24,7 @@ async function request<TResponse>(url: string, config: RequestInit): Promise<TRe
                 };
             }
 
-            const retryResponse = await fetch(`${import.meta.env.VITE_APP_API_URL}/v3/${url}`, config);
+            const retryResponse = await fetch(`${import.meta.env.VITE_APP_API_URL}/${url}`, config);
 
             if (retryResponse.status > 399) {
                 const retryErrorResponse = await retryResponse.json() as HttpError;

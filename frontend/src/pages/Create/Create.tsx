@@ -10,9 +10,11 @@ import { usePollStore } from "@/stores/pollStore";
 import { Button } from "@/components/ui/button";
 import OptionCreator from "@/pages/Create/components/OptionCreator";
 import { TrashIcon } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Create():React.ReactElement{
     const navigate = useNavigate();
+    const { toast } = useToast();
 
     const {userInfo}=useAuthStore();
     const {setPollData,pollData,setAvailablePolls,availablePolls,selectPoll,selectedPoll}=usePollStore();
@@ -63,7 +65,8 @@ export default function Create():React.ReactElement{
     useEffect(()=>{
         if(data.length>0){
             setAvailablePolls(data);
-            selectPoll(data[0]._id);
+            // Select last poll
+            selectPoll(data[data.length-1]._id);
         }
     },[data,setAvailablePolls,selectPoll]);
 
@@ -90,6 +93,24 @@ export default function Create():React.ReactElement{
         const response = await api.patch<void,PollType>(`polls/${selectedPoll}/activate`);
 
         setPollData(response);
+    }
+
+    async function endPoll(){
+        if(!selectedPoll) return;
+
+        await api.get(`votes/${selectedPoll}`).then(()=>{
+            toast({
+                title:"Encuesta finalizada",
+                description:"La encuesta ha sido finalizada correctamente",
+                variant:"default"
+            });
+        }).catch(()=>{
+            toast({
+                title:"Error al finalizar la encuesta",
+                description:"Ha ocurrido un error al finalizar la encuesta, por favor, inténtalo de nuevo",
+                variant:"destructive"
+            });
+        });
     }
 
     function renderOptions():React.ReactElement{
@@ -162,7 +183,7 @@ export default function Create():React.ReactElement{
                             <SelectLabel>Encuestas</SelectLabel>
                             {Children.toArray(availablePolls.map(poll=>(
                                 <SelectItem value={poll._id}>{poll.month} - {poll.year}</SelectItem>
-                            )))}
+                            ))).reverse()}
                             <SelectItem className="cursor-pointer" value="new">+ Nueva encuesta</SelectItem>
                         </SelectGroup>
                     </SelectContent>
@@ -186,8 +207,10 @@ export default function Create():React.ReactElement{
 
             {!!pollData && (
                 <div className="flex flex-col gap-4 items-center w-full">
-                    {!pollData.active && (
+                    {!pollData.active ? (
                         <Button variant="destructive" onClick={activatePoll}>Activar encuesta</Button>
+                    ) :(
+                        <Button variant="destructive" onClick={endPoll}>Finalizar encuesta</Button>
                     )}
                     <Button onClick={()=>setAddNewOption(true)}>Añadir opción nueva</Button>
                     {renderOptions()}
