@@ -13,7 +13,7 @@ export default function Polls():React.ReactElement{
     const navigate = useNavigate();
 
     const {pollData}=usePollStore();
-    const {userInfo}=useAuthStore();
+    const {userInfo,tickets}=useAuthStore();
 
     const {data:userVotes,isLoading,isSuccess}=useQuery({
         queryKey:["uservotes",pollData],
@@ -28,10 +28,21 @@ export default function Polls():React.ReactElement{
     const {data:lastPollResults} = useQuery({
         queryKey:["pollresults"],
         queryFn: async()=>{
-            return api.get<{
+            const pollResults = await api.get<{
                 pollData:PollType,
-                votes:Record<Categories,{option:string,votes:number}[]>
+                votes:Record<Categories,{option:string,votes:number,voters:string[]}[]>
             }>(`votes/lastresults`);
+
+            // Put the winner of each category first according to the poll data
+            const sortedVotes = Object.fromEntries(Object.entries(pollResults.votes).map(([category,votes])=>[
+                category,
+                votes.sort((a,b)=>pollResults.pollData.results[category as Categories].winner===a.option?-1:pollResults.pollData.results[category as Categories].winner===b.option?1:0)
+            ]));
+
+            return {
+                pollData:pollResults.pollData,
+                votes:sortedVotes
+            };
         },
         enabled:isSuccess&&!userVotes
     });
@@ -77,6 +88,9 @@ export default function Polls():React.ReactElement{
             {(pollData&&!!userVotes)?(
                 <div className="mt-8">
                     <h1 className="text-4xl text-center">Encuesta del mes de {pollData.month.toLowerCase()}</h1>
+                    {tickets>0&&(
+                        <p className="text-center mt-4 animate-bounce">¡Tienes {tickets} {tickets===1?"ticket disponible":"tickets disponibles"}!</p>
+                    )}
                     <ul className="flex flex-wrap gap-4 mt-8">
                         {Children.toArray(medios.map((medio)=>(
                             <li className="w-full sm:w-[calc(50%-.5rem)] text-card">
@@ -114,11 +128,14 @@ export default function Polls():React.ReactElement{
                                     <li>
                                         <h3 className="text-xl font-semibold">{medio.name}</h3>
                                         <ul className="ml-4">
-                                            {Children.toArray(Object.entries(lastPollResults.votes[medio.key]).map(([_,value])=>(
-                                                <li>
-                                                    <p>{value.votes} {value.votes===1 ? "voto": "votos"}: {lastPollResults.pollData[medio.key].find(x=>x._id===value.option)?.name}</p>
-                                                </li>
-                                            )))}
+                                            {Children.toArray(Object.entries(lastPollResults.votes[medio.key])
+                                                .map(([_,value],i)=>(
+                                                    <li>
+                                                        <p className={i===0?"text-green-600 font-semibold":""}>{value.votes} {value.votes===1 ? "voto": "votos"}: {lastPollResults.pollData[medio.key].find(x=>x._id===value.option)?.name} {i===0&&(
+                                                            <span>&lt;--</span>
+                                                        )}</p>
+                                                    </li>
+                                                )))}
                                         </ul>
                                     </li>
                                 )))}

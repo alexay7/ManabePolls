@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { Poll } from "../models/poll.model";
-import { OptionType } from "../types/polls";
+import { OptionType, PollWinnerVoters } from "../types/polls";
 
 export const pollService = {
     async createPoll(createPoll:{month:string,year:string}) {
@@ -33,10 +33,11 @@ export const pollService = {
             active:true
         },{new:true});
     },
-    endPoll(pollId:Types.ObjectId) {
+    endPoll(pollId:Types.ObjectId,voters:PollWinnerVoters) {
         return Poll.findByIdAndUpdate(pollId,{
             active:false,
-            ended:true
+            ended:true,
+            voters
         },{new:true});
     },
     findPollById(pollId:Types.ObjectId) {

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { OptionType, PollType } from "../types/polls";
+import { OptionType, PollType, PollWinnerVoters } from "../types/polls";
 
 const linkSchema = new Schema<OptionType["links"][0]>({
     name:{
@@ -35,6 +35,40 @@ const optionSchema = new Schema<OptionType>({
         required:true
     }
 });
+
+const result = new Schema<PollWinnerVoters["anime"]>({
+    voters:{
+        type:[String],
+        required:true
+    },
+    winner:{
+        type:Schema.Types.ObjectId,
+        required:true
+    }
+},{_id:false});
+
+const results = new Schema<PollWinnerVoters>({
+    anime:{
+        type:result,
+        required:true
+    },
+    manga:{
+        type:result,
+        required:true
+    },
+    novel:{
+        type:result,
+        required:true
+    },
+    vn:{
+        type:result,
+        required:true
+    },
+    live:{
+        type:result,
+        required:true
+    }
+},{_id:false});
 
 const pollSchema = new Schema<PollType>({
     month: {
@@ -72,6 +106,10 @@ const pollSchema = new Schema<PollType>({
     ended:{
         type:Boolean,
         default:false
+    },
+    results:{
+        type:results,
+        required:false
     }
 });
 

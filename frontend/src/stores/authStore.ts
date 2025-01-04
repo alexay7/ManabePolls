@@ -18,6 +18,10 @@ type AuthStore = {
     bearerToken: string | null;
     setBearerToken: (token: string) => void;
 
+    tickets: number;
+    setTickets: (tickets: number) => void;
+    consumeTicket: () => void;
+
     logout: () => void;
 };
 
@@ -37,6 +41,10 @@ export const useAuthStore = create(
 
         bearerToken: null,
         setBearerToken: (token: string) => set({ bearerToken: token }),
+
+        tickets: 0,
+        setTickets: (tickets: number) => set({ tickets }),
+        consumeTicket: () => set((state) => ({ tickets: state.tickets - 1 })),
 
         logout: () => {
             sessionStorage.removeItem("bearerToken");

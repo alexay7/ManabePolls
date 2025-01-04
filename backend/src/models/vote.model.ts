@@ -1,5 +1,16 @@
 import mongoose, { Schema } from "mongoose";
-import { VoteType } from "../types/vote";
+import { VoteOptionType, VoteType } from "../types/vote";
+
+const optionVoteSchema = new Schema<VoteOptionType>({
+    option:{
+        type: Schema.Types.ObjectId,
+        required:true
+    },
+    votes:{
+        type:Number,
+        default:1
+    }
+},{_id:false});
 
 const voteSchema = new Schema<VoteType>({
     user: {
@@ -18,8 +29,7 @@ const voteSchema = new Schema<VoteType>({
     },
 
     options: {
-        type: [Schema.Types.ObjectId],
-        ref:"Poll.options",
+        type: [optionVoteSchema],
         required:true
     }
 });

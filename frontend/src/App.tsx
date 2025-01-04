@@ -13,7 +13,7 @@ import Loader from '@/components/Loader';
 
 export default function App() {
     const navigate = useNavigate();
-    const {userInfo,logout}=useAuthStore();
+    const {userInfo,logout,setTickets}=useAuthStore();
     const {poll}=useParams();
 
     const {setPollData}=usePollStore();
@@ -31,6 +31,20 @@ export default function App() {
         },
         enabled:!!userInfo
     });
+
+    const {data:ticketData}=useQuery({
+        queryKey:["tickets"],
+        queryFn: async()=>{
+            return api.get<{tickets:number}>("user/tickets");
+        },
+        enabled:!!userInfo
+    });
+
+    useEffect(()=>{
+        if(!ticketData)return;
+
+        setTickets(ticketData.tickets);
+    },[ticketData,setTickets]);
 
     useEffect(()=>{
         const sessionToken = sessionStorage.getItem("bearerToken");

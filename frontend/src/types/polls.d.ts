@@ -23,4 +23,5 @@ export type PollType = {
     vn: OptionType[];
     live: OptionType[];
     active:boolean;
+    results: Record<Categories,{voters:string[],winner:string}>
 }

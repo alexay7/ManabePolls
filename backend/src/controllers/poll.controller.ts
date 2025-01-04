@@ -4,6 +4,9 @@ import { Types } from "mongoose";
 import { TypedRequest, TypedRequestBody, TypedRequestParams } from "zod-express-middleware";
 import { createOptionDto, createPollDto, pollEndpointParams, pollOptionEndpointParams, pollTypeEndpointParams } from "../dto/poll.dto";
 import { ZodNever } from "zod";
+import { voteService } from "../services/vote.service";
+import axios from "axios";
+import { userService } from "../services/user.service";
 
 export async function createPoll(req: TypedRequestBody<typeof createPollDto>, res: Response,next: NextFunction) {
     try{
@@ -85,6 +88,38 @@ export async function activatePoll(req: TypedRequestParams<typeof pollEndpointPa
         if (!result) {
             return next({ status: 500, message: "Poll activation failed" });
         }
+
+        // Search for the last ended poll
+        const [lastPoll] = await pollService.getLastPoll();
+
+        // Calculate all the users that voted for anything
+        const allVoters = await voteService.getTotalPollVoters(lastPoll._id);
+
+        // Process tickets
+        const rawRes = await axios.post<{userId:string,status:"bonus"|"penalty"}[]>(`${process.env.TICKETS_API_URL}/calculate-tickets`,{results:lastPoll.results});
+        
+        if (rawRes.status !== 201) {
+            return next({ status: 500, message: "Error calculating tickets" });
+        }
+        
+        const userActions = rawRes.data;
+        
+        // Por cada usuario que merece premio o recompensa según sus logs, incrementar o decrementar tickets
+        await Promise.all(userActions.map(async (action) => {
+            if (action.status === "bonus") {
+                // Don't increment tickets for users that didn't vote
+                if (!allVoters.find((voter) => voter._id === action.userId)) {
+                    console.log("User didn't vote, skipping increment");
+                    return;
+                }
+        
+                console.log("Incrementing tickets for user",action.userId);
+                await userService.incrementUserTickets(action.userId);
+            } else if(action.status === "penalty") {
+                console.log("Decrementing tickets for user",action.userId);
+                await userService.decrementUserTickets(action.userId);
+            }
+        }));
 
         return res.json(result);
     }catch (error) {

@@ -11,6 +11,7 @@ import {Strategy as JwtStrategy} from "passport-jwt";
 import pollRouter from "./routes/poll.routes";
 import session from "express-session";
 import voteRouter from "./routes/vote.routes";
+import userRouter from "./routes/user.routes";
 
 // configures dotenv to work in your application
 dotenv.config();
@@ -55,6 +56,7 @@ passport.use(
 app.use("/discord",discordController);
 app.use("/polls", pollRouter);
 app.use("/votes",voteRouter);
+app.use("/user",userRouter);
 
 app.use(function(req, res, next) {
     next(createHttpError(404,"Not Found"));
