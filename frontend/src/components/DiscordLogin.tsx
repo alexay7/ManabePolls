@@ -3,7 +3,9 @@ import { useAuthStore } from "@/stores/authStore";
 import { DiscordUserData } from "@/types/discord";
 import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import trustMeBro from "@/assets/trustmebro.webp";
+import trustMeBro1 from "@/assets/trustmebro.webp";
+import trustMeBro2 from "@/assets/trustmebro2.webp";
+import trustMeBro3 from "@/assets/trustmebro3.webp";
 import DiscordIcon from "@/assets/discord.svg?react";
 
 export default function DiscordLogin():React.ReactElement{
@@ -80,6 +82,12 @@ export default function DiscordLogin():React.ReactElement{
         }
     },[modalRef]);
 
+    function showRandomTrustMeBroImage(){
+        const images = [trustMeBro1,trustMeBro2,trustMeBro3];
+
+        return images[Math.floor(Math.random()*images.length)];
+    }
+
     return(
         <Dialog open={!userInfo&&!loading}>
             <DialogContent ref={modalRef}>
@@ -87,7 +95,7 @@ export default function DiscordLogin():React.ReactElement{
                 <DialogDescription>
                     <div className="flex gap-8">
                         <div className="w-1/3 flex flex-col items-center gap-2">
-                            <img src={trustMeBro} alt="" />
+                            <img src={showRandomTrustMeBroImage()} alt="" />
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-evenly gap-4 lg:gap-0">
                             <p>Necesitamos confirmar tu identidad para poder votar en las encuestas del mes. Tranquilo, no vamos a hacer nada con tus datos de Discord. Trust me Bro.</p>
