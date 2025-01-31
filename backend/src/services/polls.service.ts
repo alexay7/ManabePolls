@@ -37,7 +37,7 @@ export const pollService = {
         return Poll.findByIdAndUpdate(pollId,{
             active:false,
             ended:true,
-            voters
+            results:voters
         },{new:true});
     },
     findPollById(pollId:Types.ObjectId) {
