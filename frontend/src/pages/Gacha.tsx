@@ -14,6 +14,7 @@ type Char = {
             english: string;
         };
         image: string;
+        rarity: number;
     };
     pinned: boolean;
     yikes: boolean;
@@ -216,13 +217,17 @@ export default function Gacha(): ReactElement {
             <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4">
                 {Children.toArray(chars.map((char: Char) => (
                     <a
-                        className="flex flex-col items-center justify-between gap-2 border border-white rounded-md w-32 overflow-hidden group pb-2"
+                        className={twMerge("flex flex-col items-center justify-between gap-2 border-4 rounded-md w-32 overflow-hidden group pb-2 shadow-accent shadow-md hover:rotate-6 transition-transform hover:animate-pulse", char.character.rarity === 5 ? "border-green-500" : "border-amber-400")}
                         rel="noreferrer"
                         href={`https://anilist.co/character/${char.character.id}`}
                         target="_blank"
                     >
                         <div className="flex flex-col gap-2 justify-center items-center">
-                            <div className="flex w-32 h-48 overflow-hidden">
+                            <div
+                                className={twMerge("flex w-32 h-48 overflow-hidden border-b-2 relative", char.character.rarity === 5 ? "border-green-500" : "border-amber-400")}>
+                                <p className={twMerge("absolute top-2 left-2 bg-foreground text-white rounded-md p-1 font-bold", char.character.rarity === 5 ? "bg-green-500" : "bg-amber-400")}>
+                                    {char.character.rarity === 5 ? "SR" : "R"}
+                                </p>
                                 <img src={char.character.image} alt={char.character.name.native}
                                     className="group-hover:scale-110 transition-transform w-32"/>
                             </div>
