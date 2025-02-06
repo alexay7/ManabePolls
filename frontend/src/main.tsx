@@ -12,6 +12,7 @@ import { Toaster } from '@/components/ui/toaster.tsx';
 
 import '@fontsource/m-plus-rounded-1c';
 import '@fontsource/fira-sans-condensed/latin.css';
+import Gacha from "@/pages/Gacha.tsx";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path:"/:poll",
                 element: <App/>
+            },
+            {
+                path:"/gacha/:user",
+                element: <Gacha/>
             }
         ]
     },

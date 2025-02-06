@@ -1,33 +1,34 @@
-import { Types } from "mongoose";
-import { pollService } from "./polls.service";
-import { OptionType } from "../types/polls";
+import {Types} from "mongoose";
+import {pollService} from "./polls.service";
+import {OptionType} from "../types/polls";
 import axios from "axios";
+import {config} from "../config/config";
 
 const categories = {
-    anime:{
+    anime: {
         name: "Anime",
-        role:"1167607983795085395"
+        role: "1167607983795085395"
     },
-    manga:{
+    manga: {
         name: "Manga",
-        role:"1167607879667298354"
+        role: "1167607879667298354"
     },
-    novel:{
+    novel: {
         name: "Lectura",
-        role:"1167607765590605905"
+        role: "1167607765590605905"
     },
-    vn:{
+    vn: {
         name: "VN",
-        role:"1167608243254722580"
+        role: "1167608243254722580"
     },
-    live:{
+    live: {
         name: "Live Actions",
-        role:"1165379985171816478"
+        role: "1165379985171816478"
     }
 };
 
 export const discordService = {
-    async sendMediaOfTheMonthMessage(category:"anime"|"manga"|"novel"|"vn"|"live", pollId:Types.ObjectId, optionId:Types.ObjectId){
+    async sendMediaOfTheMonthMessage(category: "anime" | "manga" | "novel" | "vn" | "live", pollId: Types.ObjectId, optionId: Types.ObjectId) {
         const pollData = await pollService.findPollById(pollId);
 
         if (!pollData) {
@@ -42,8 +43,8 @@ export const discordService = {
 
         const message = `# Club de ${categories[category].name} - ${pollData.month} ${pollData.year}\nEl ganador de este mes es:\n## [${option.name}](${option.imageUrl})\n\n- Dificultad: ${option.difficulty}\n- Sinopsis: \n> ${option.description}\n\nQue tengan una gratificante experiencia y gracias por participar <:ayaya:1157825603597238372> \n\n<@&${categories[category].role}>`;
 
-        const response = await axios.post(process.env.DISCORD_WEBHOOK_URL!,{
-            content:message
+        const response = await axios.post(config.DISCORD_WEBHOOK_URL!, {
+            content: message
         });
 
         return response.status;
