@@ -57,7 +57,7 @@ discordController.get("/p/getMe", async (req, res) => {
     const response = await me.data;
 
     const accessToken = jwt.sign(response, config.SESSION_SECRET as string, {
-        expiresIn: '1d',
+        expiresIn: '7d',
     });
 
     res.json({accessToken, userInfo: response});

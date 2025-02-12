@@ -1,42 +1,42 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import PageComponent from '@/components/PageComponent.tsx';
-import { ThemeProvider } from '@/components/theme-provider.tsx';
+import {ThemeProvider} from '@/components/theme-provider.tsx';
 import Privacy from '@/pages/Privacy.tsx';
 import Create from '@/pages/Create/Create.tsx';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from '@/components/ui/toaster.tsx';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {Toaster} from '@/components/ui/toaster.tsx';
 
 import '@fontsource/m-plus-rounded-1c';
 import '@fontsource/fira-sans-condensed/latin.css';
-import Gacha from "@/pages/Gacha.tsx";
+import Gacha from "@/pages/Gacha/Gacha.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <PageComponent/>,
-        children:[
+        children: [
             {
                 path: "/",
                 element: <App/>
             },
             {
-                path:"/privacy",
+                path: "/privacy",
                 element: <Privacy/>
             },
             {
-                path:"/create",
+                path: "/create",
                 element: <Create/>
             },
             {
-                path:"/:poll",
+                path: "/:poll",
                 element: <App/>
             },
             {
-                path:"/gacha/:user",
+                path: "/gacha/:user",
                 element: <Gacha/>
             }
         ]
@@ -50,7 +50,7 @@ createRoot(document.getElementById('root')!).render(
         <Toaster/>
         <QueryClientProvider client={queryClient}>
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                <RouterProvider router={router} />
+                <RouterProvider router={router}/>
             </ThemeProvider>
         </QueryClientProvider>
     </StrictMode>,
