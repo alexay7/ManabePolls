@@ -87,7 +87,7 @@ export default function Gacha(): ReactElement {
             const series = filteredChars.reduce((acc, char) => {
                 if (!acc[char.character.serie.title]) {
                     acc[char.character.serie.title] = {
-                        titles: [char.character.serie.title].concat(char.character.serie.otherTitles),
+                        titles: [char.character.serie.title || ""].concat(char.character.serie.otherTitles.filter(x => !!x)),
                         totalChars: 1
                     };
                 } else {
@@ -96,6 +96,8 @@ export default function Gacha(): ReactElement {
 
                 return acc;
             }, {} as Record<string, SeriesFilters>);
+
+            console.log(series);
 
             setSeriesFilters(Object.values(series));
         }
@@ -261,9 +263,9 @@ export default function Gacha(): ReactElement {
                     </SelectContent>
                 </Select>
             </div>
-            <div className="flex flex-row-reverse gap-8">
+            <div className="flex flex-col lg:flex-row-reverse gap-8">
                 <div
-                    className="max-h-[500px] overflow-y-auto flex flex-col w-[250px] bg-white p-4 rounded-md text-background gap-4">
+                    className="max-h-[500px] overflow-y-auto flex flex-col w-full lg:w-[250px] bg-white p-4 rounded-md text-background gap-4">
                     <h2 className="font-bold">Filtros por serie</h2>
                     <Input placeholder="Buscar serie..." onChangeCapture={(e) => {
                         setSearchSerie(e.currentTarget.value);
@@ -287,7 +289,7 @@ export default function Gacha(): ReactElement {
                             />
                             <label className="flex-grow" htmlFor="all">Todas las series</label>
                         </li>
-                        {Children.toArray(seriesFilters.filter(x => !searchSerie || x.titles.some(title => title.toLowerCase().includes(searchSerie.toLowerCase()))
+                        {Children.toArray(seriesFilters.filter(x => !searchSerie || x.titles.some(title => title?.toLowerCase().includes(searchSerie.toLowerCase()))
                         ).map((serie) => (
                             <li className="flex items-center gap-2">
                                 <input
