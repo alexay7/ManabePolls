@@ -35,7 +35,11 @@ export default function App() {
     const {data: ticketData} = useQuery({
         queryKey: ["tickets"],
         queryFn: async () => {
-            return api.get<{ tickets: number }>("user/tickets");
+            try {
+                return api.get<{ tickets: number }>("user/tickets");
+            } catch {
+                logout();
+            }
         },
         enabled: !!userInfo
     });

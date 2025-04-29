@@ -48,8 +48,9 @@ export const useAuthStore = create(
 
         logout: () => {
             localStorage.removeItem("bearerToken");
+            localStorage.removeItem("auth-storage");
             set({accessToken: null, tokenType: null, userInfo: null});
-            window.location.href = "/";
+            window.location.reload();
         }
     }
     ), {

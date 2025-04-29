@@ -12,7 +12,8 @@ async function request<TResponse>(url: string, config: RequestInit): Promise<TRe
 
     const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/${url}`, config);
     if (response.status > 399) {
-        const errorResponse = await response.json() as HttpError;
+        const resJson = await response.json() as { message: string };
+        const errorResponse = new HttpError(resJson.message, response.status, "NONE");
         if (errorResponse.status === 401) {
             // Retry the request
             token = localStorage.getItem("bearerToken");
@@ -27,10 +28,12 @@ async function request<TResponse>(url: string, config: RequestInit): Promise<TRe
             const retryResponse = await fetch(`${import.meta.env.VITE_APP_API_URL}/${url}`, config);
 
             if (retryResponse.status > 399) {
-                const retryErrorResponse = await retryResponse.json() as HttpError;
+                const resJson = await retryResponse.json() as { message: string };
+                const retryErrorResponse = new HttpError(resJson.message, response.status, "NONE");
                 if (retryErrorResponse.status === 401) {
                     localStorage.removeItem("bearerToken");
                     window.location.reload();
+                    throw new HttpError(retryErrorResponse.message, retryResponse.status, "NONE");
                 }
             }
 

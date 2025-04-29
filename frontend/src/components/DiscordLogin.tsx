@@ -38,6 +38,7 @@ export default function DiscordLogin(): React.ReactElement {
                 setAccessToken(undefined);
                 setTokenType(undefined);
                 localStorage.removeItem("bearerToken");
+                localStorage.removeItem("auth-storage")
                 setLoading(false);
                 return;
             }
